@@ -821,3 +821,170 @@ Que peut-on faire hors connexion ?
 Que ne peut-on pas faire ?
 Comment synchroniser ?
 Que se passe-t-il si deux appareils modifient la même donnée ?
+
+# Notre MVP
+
+Avec tout ce que nous avons déjà analysé pour Bangs 224, je commencerais par le cœur du produit.
+
+# Phase 1 — Fondation
+
+Module 1 : Authentification & utilisateurs
+
+Module 2 : Entreprise / boutique
+
+Module 3 : Rôles & permissions
+
+# Phase 2 — Cœur commercial
+
+Module 4 : Catégories & produits
+
+Module 5 : Stock
+
+Module 6 : Caisse / ventes
+
+Module 7 : Historique des ventes
+
+# Phase 3 — Gestion commerciale
+
+Module 8 : Clients
+
+Module 9 : Fournisseurs & achats
+
+Module 10 : Tableau de bord
+
+Puis :
+
+# Phase 4
+notes
+journal d'activité
+notifications
+abonnement
+suspension
+paiement
+multi-boutiques
+multi-pays
+multilingue
+mode offline
+synchronisation
+
+Et ensuite nous attaquerons sérieusement Flutter.
+
+# Use cases → modèle de données → architecture → API → frontend → code.
+
+# Notre Module 1 se précise
+
+Nous pouvons maintenant découper le module :
+
+# 1.1 Inscription
+# Créer compte
+   1.2 Création entreprise
+   Créer entreprise
+   1.3 Création boutique
+# Créer boutique
+   1.4 Authentification
+   Login
+   Logout
+# 1.5 Gestion du profil
+   Consulter profil
+   Modifier profil
+   Changer mot de passe
+# 1.6 Invitation
+   Inviter employé
+   Accepter invitation
+   Créer mot de passe
+# 1.7 Statut utilisateur
+   Invited
+   Active
+   Suspended
+   Deactivated
+
+# Notre table devient
+   
+# UTILISATEUR
+----------------------------------------
+utilisateur_id      PK
+nom
+prenom
+email               UNIQUE
+telephone
+adresse
+mot_de_passe
+est_actif
+date_creation
+date_modification
+
+# ENTREPRISE
+----------------------------------------
+entreprise_id       PK
+nom_entreprise      NOT NULL
+description         NULL
+est_active          NOT NULL
+date_creation       NOT NULL
+date_modification   NOT NULL
+
+# BOUTIQUE
+------------------------------------------------
+boutique_id           PK
+nom_boutique          NOT NULL
+description           NULL
+pays                  NOT NULL
+region                NOT NULL
+adresse               NOT NULL
+devise                NOT NULL
+type_activite         NOT NULL
+date_creation         NOT NULL
+date_modification     NOT NULL
+
+# BOUTIQUE
+------------------------------------------------
+boutique_id           PK
+nom_boutique          NOT NULL
+description           NULL
+pays                  NOT NULL
+region                NOT NULL
+adresse               NOT NULL
+devise                NOT NULL
+type_activite         NOT NULL
+date_creation         NOT NULL
+date_modification     NOT NULL
+
+# MEMBRE_ENTREPRISE
+--------------------------------
+membre_entreprise_id
+utilisateur_id
+entreprise_id
+role
+est_actif
+date_adhesion
+
+# Notre modèle du Module 1
+
+# Nous avons maintenant pratiquement toutes nos entités principales :
+
+┌───────────────────┐
+│    UTILISATEUR    │
+└─────────┬─────────┘
+          │
+          │
+          ▼
+┌────────────────────────┐
+│   MEMBRE_ENTREPRISE    │
+└─────────┬──────────────┘
+          │
+          │
+          ▼
+┌────────────────────────┐
+│ AFFECTATION_BOUTIQUE   │
+└─────────┬──────────────┘
+          │
+          │
+          ▼
+┌───────────────────┐
+│     BOUTIQUE      │
+└─────────┬─────────┘
+          │
+          │ appartient à
+          ▼
+┌───────────────────┐
+│    ENTREPRISE     │
+└───────────────────┘
