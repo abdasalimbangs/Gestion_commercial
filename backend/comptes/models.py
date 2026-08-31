@@ -4,41 +4,40 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 # Create your models here.
 
 # Définition de la classe manager de l'utilisation
-    class UtilisateurManager(BaseUserManager):  
+class UtilisateurManager(BaseUserManager):  
 
-        def create_user(self, nom, prenom, telephone, mot_de_passe, email=None, adresse=None):
+    def create_user(self, nom, prenom, telephone, mot_de_passe, email=None, adresse=None):
 
-            utilisateur = self.model(
-                nom = nom,
-                prenom = prenom,
-                telephone = telephone,
-                email = email,
-                adresse = adresse
-            )
-            utilisateur.set_password(mot_de_passe)
-            utilisateur.save()
+        utilisateur = self.model(
+            nom = nom,
+            prenom = prenom,
+            telephone = telephone,
+            email = email,
+            adresse = adresse
+        )
+        utilisateur.set_password(mot_de_passe)
+        utilisateur.save()
 
-            return utilisateur
+        return utilisateur
 
-        def create_superuser(self, nom, prenom, telephone, mot_de_passe, email=None, adresse=None):
+    def create_superuser(self, nom, prenom, telephone, mot_de_passe, email=None, adresse=None):
 
-            utilisateur = self.create_user(
-                nom, 
-                prenom, 
-                telephone, 
-                mot_de_passe, 
-                email, 
-                adresse
-            )
+        utilisateur = self.create_user(
+            nom, 
+            prenom, 
+            telephone, 
+            mot_de_passe, 
+            email, 
+            adresse
+        )
             
-            utilisateur.is_staff = True 
-            utilisateur.is_superuser = True
+        utilisateur.is_staff = True 
+        utilisateur.is_superuser = True
 
-            utilisateur.save()
+        utilisateur.save()
 
-            return utilisateur
+        return utilisateur
 
-    
 
 # Définition de la classe Utilisateur 
 class Utilisateur(AbstractBaseUser,PermissionsMixin ):
@@ -61,7 +60,7 @@ class Utilisateur(AbstractBaseUser,PermissionsMixin ):
         blank=True
     )
 
-    est_active = models.BooleanField(default=True)
+    est_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
     date_creation = models.DateTimeField(auto_now_add=True)
