@@ -25,7 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'comptes',  
+    "rest_framework",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
+    "comptes",
+
 ]
 
 MIDDLEWARE = [
@@ -118,4 +122,15 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Bangs 224 API",
+    "DESCRIPTION": "API de gestion commerciale de Bangs 224",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }

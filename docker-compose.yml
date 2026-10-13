@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: gestion_commercial_postgres
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_DB: gestion_commercial
+      POSTGRES_USER: gestion_user
+      POSTGRES_PASSWORD: gestion_dev_password
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
