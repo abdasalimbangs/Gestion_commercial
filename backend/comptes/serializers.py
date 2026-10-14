@@ -4,7 +4,10 @@ from .models import Utilisateur
 #Classe pour transformation les donnée jSon en Objet
 class UtilisateurSerializer(serializers.ModelSerializer):
 
-    mot_de_passe = serializers.CharField(write_only=True)
+    mot_de_passe = serializers.CharField(
+        write_only=True,
+        style = {"input_type": "password"}
+    )
 
     class Meta:
         model = Utilisateur

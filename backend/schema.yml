@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: Bangs 224 API
+  version: 1.0.0
+  description: API de gestion commerciale de Bangs 224
+paths:
+  /api/comptes/inscription/:
+    post:
+      operationId: comptes_inscription_create
+      tags:
+      - comptes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+components:
+  schemas:
+    Utilisateur:
+      type: object
+      properties:
+        nom:
+          type: string
+          maxLength: 30
+        prenom:
+          type: string
+          maxLength: 50
+        telephone:
+          type: string
+          maxLength: 15
+        email:
+          nullable: true
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        adresse:
+          type: string
+          nullable: true
+          maxLength: 225
+        mot_de_passe:
+          type: string
+          writeOnly: true
+      required:
+      - mot_de_passe
+      - nom
+      - prenom
+      - telephone
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

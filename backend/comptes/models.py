@@ -1,3 +1,6 @@
+import secrets
+from datetime import timedelta
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
@@ -69,3 +72,30 @@ class Utilisateur(AbstractBaseUser,PermissionsMixin ):
     USERNAME_FIELD = "telephone"
 
     objects = UtilisateurManager()
+
+# Definition de la classe OTP pour la generer le code OTP
+class VerificationTelephone(models.Model):
+    verification_id = models.BigAutoField(primary_key=True)
+    utilisateur = models.ForeignKey(
+        "comptes.Utilisateur",
+        on_delete=models.CASCADE,
+        related_name="verifications_telephone"
+    )
+    code_hache = models.CharField(max_length=128)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_expiration = models.DateTimeField()
+    nombre_tentatives = models.PositiveSmallIntegerField(default=0)
+    date_dernier_envoi = models.DateTimeField(default=timezone.now)
+    est_utilise = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Vérification de téléphone"
+        verbose_name_plural = "Vérifications de téléphone"
+        ordering = ["-date_creation"]
+
+    def __str__(self):
+        return f"Vérification de {self.utilisateur.telephone}"
+
+    @property
+    def est_expire(self):
+        return timezone.now() >= self.date_expiration
